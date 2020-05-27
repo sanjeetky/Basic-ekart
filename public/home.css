@@ -1,0 +1,33 @@
+body{
+    background-color:rgb(228, 245, 245);
+}
+h2
+{
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+}
+#wrapper {
+    background-color:rgb(228, 245, 245);;
+    width: 100%;
+height: 100%;
+    overflow: hidden; /* add this to contain floated children */
+}
+#signup {
+    background-color:rgb(228, 245, 245);;
+    width: 50%;
+    height: 100%;
+    float:left; /* add this */
+    align-items: center;
+ 
+   
+}
+#login {
+    background-color:rgb(228, 245, 245);;
+   width: 50%;
+    float: left; /* add this */
+   height: 100%;
+}
+
+form {
+    display: inline-block;
+}
