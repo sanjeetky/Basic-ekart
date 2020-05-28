@@ -14,17 +14,17 @@ var ipaisa=document.getElementById('ipaisa');
 function dikhao(g)
 {
     console.log("clicked");
-     inam.innerHTML=nam;
-     console.log(paisa);
-     ipaisa.innerHTML=paisa;
+    inam.innerHTML="Welcome"+" "+nam;
+    ipaisa.innerHTML="Current Balance"+": "+paisa;
     if(g==0)
        {
-         aadmi.style.dispaly="none";
+         aadmi.style.display="none";
          para.style.display="block";
        }
     else
     {
-        aadmi.style.dispaly="block";
+       
+        aadmi.style.display="block";
          para.style.display="none";
     }
     
@@ -41,6 +41,9 @@ var user={
     username:userid,
     password:pass
 }
+document.getElementById('name').value="";
+document.getElementById('userid').value="";
+document.getElementById('pass').value="";
    fetch('/users',{
        method:'POST',
        headers:{ 'Content-Type':'application/json'},
@@ -67,6 +70,8 @@ function login()
     username:userid,
     password:pass
 }
+document.getElementById('userid2').value="";
+document.getElementById('pass2').value="";
    fetch('/userslogin',{
        method:'POST',
        headers:{ 'Content-Type':'application/json'},
@@ -92,7 +97,7 @@ function mango()
         password:password3,
         rupee:rupee
     }
-    
+    document.getElementById('mango').value="";
     console.log("clicked");
     fetch('/users',{
         method:'PUT',
@@ -111,30 +116,10 @@ function bhejo()
 {
    let rupee=document.getElementById('mango3').value;
    let username4=document.getElementById('username3').value;
- 
-     
-   var aaadmi={
-    username:username3,
-    password:password3,
-    rupee:+paisa - +rupee
-}
+  
+document.getElementById('mango3').value="";
+document.getElementById('username3').value="";
 
-fetch('/users',{
-    method:'PUT',
-    headers:{ 'Content-Type':'application/json'},
-    body:JSON.stringify(aaadmi)
-})
-.then((res)=>res.json())
-.then(data=>{
-    paisa=data.paisa;
-    dikhao(1);
-})
-.catch(err=>console.log(err));
-
-
-
-
-    console.log("clicked");
 
        var user={
         username:username4
@@ -146,7 +131,8 @@ fetch('/users',{
        })
        .then((res)=>res.json())
        .then((data)=>{
-    
+           if(+paisa - +rupee >0)
+           {
         var temp={
             username:data[0].username,
             password:data[0].password,
@@ -163,10 +149,28 @@ fetch('/users',{
         })
         .catch(err=>console.log(err));
 
+
+        var aaadmi={
+            username:username3,
+            password:password3,
+            rupee:+paisa - +rupee
+        }
+        fetch('/users',{
+            method:'PUT',
+            headers:{ 'Content-Type':'application/json'},
+            body:JSON.stringify(aaadmi)
+        })
+        .then((res)=>res.json())
+        .then(data=>{
+            paisa=data.paisa;
+            dikhao(1);
+        })
+        .catch(err=>console.log(err));
+          }
        })
        .catch(err=>console.log(err));
 
-
+    
     }
 
    

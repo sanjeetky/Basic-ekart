@@ -5,46 +5,68 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
        
     </head>
-    <body onload="dikhao(0)">
+    <body onload=dikhao(0)>
 
 
           <div id="wrapper">
 
              <div id="signup" >
-                 <h1>SignUp</h1>
-                 <input  type="text"  id="name" placeholder="enter your name" />
+               <div style="margin-left: 10%; height: 100%; margin-top: 30%;text-align: center;">
+                 <h1 style="margin-bottom: 5%; ">SignUp</h1>
+                 <h4 style="margin-bottom: 1%;">Name</h4>
+                 
+                 <input  style="margin-bottom: 3%; margin-top: 0%;" type="text"  id="name" placeholder="enter your name" />
                  <br>
-                 <input  type="text" id="userid" placeholder="enter the userid" />
+                 <h4 style="margin-bottom: 1%;">UserName</h4>
+                 <input  style="margin-bottom: 3%;" type="text" id="userid" placeholder="enter the userid" />
                  <br>
-                 <input type="password" id="pass" placeholder="enter the password" />
+                 <h4 style="margin-bottom: 1%;" >Password</h4>
+                 <input style="margin-bottom: 3%;" type="password" id="pass" placeholder="enter the password" />
                  <br>
                  <button onclick='create()'>Sign up</button>
+                 
+                </div>
             </div>
         
         
             <div id="login">
-             <h1>Login</h1>
-             <input  type="text" id="userid2" placeholder="enter the userid" />
+              <div style="margin-left: 10%; height: 100%; margin-top: 30%;text-align: center;">
+                <h1 style="margin-bottom: 5%; ">Login</h1>
+                <h4 style="margin-bottom: 1%;">UserName</h4>
+             <input  style="margin-bottom: 3%;" type="text" id="userid2" placeholder="enter the userid" />
              <br>
-             <input type="password" id="pass2" placeholder="enter the password" />
+             <h4 style="margin-bottom: 1%;" >Password</h4>
+             <input style="margin-bottom: 3%;" type="password" id="pass2" placeholder="enter the password" />
              <br>
              <button onclick=login()>Login</button>
             </div>
+            </div>
          
         </div>
-        <div id="aadmi">
-          <h1>Welcome</h1>
-            <h1 id="inam"></h1>
-            <h1>current amount</h1>
-            <h2 id="ipaisa"></h2>
-            <input id="mango" type="number" placeholder="enter amount to buy" />
-            <button onclick="mango()">BUY</button>
-       <br>
-            <input id="username3" type="text" placeholder="enter username to send" />
-            <input id="mango3" type="number" placeholder="enter amount to send" />
-            <button onclick="bhejo()">SEND</button>
+
+
+
+
+        <div id="aadmi" style="   background-color:rgb(228, 245, 245); height: 100%;" > 
+            <h1 style="text-align: center; margin-left: 5%; margin-top: 0%; padding-top: 1%;" id="inam"></h1>
+            <h3  style="text-align: center; margin-left: 5%;" id="ipaisa"></h3>
+
+            <h3 style="margin-bottom: 2%; margin-left: 5%;">Loan</h3>
+            <input id="mango" style="margin-bottom: 1%; margin-left: 5%;"  type="number" placeholder="enter amount to buy" />
+            <br>
+            <button  style="margin-bottom: 3%;margin-left: 5%;" onclick="mango()">BUY</button>
+            <br>
+            <h3 style="margin-bottom: 2%;margin-left: 5%; ">Send Money</h3>
+            <input id="username3" style="margin-bottom: 1%;margin-left: 5%; "  type="text" placeholder="enter username to send" />
+            <br>
+            <input id="mango3"   type="number" style="margin-bottom: 1%;margin-left: 5%; " placeholder="enter amount to send" />
+            <br>
+            <button style="margin-left: 5%;" onclick="bhejo()">SEND</button>
 
         </div>
+
+
+        
         <script src="home.js" >
           
         </script>
