@@ -7,7 +7,7 @@ var para=document.getElementById('wrapper');
 var aadmi=document.getElementById('aadmi');
 var inam=document.getElementById('inam');
 var ipaisa=document.getElementById('ipaisa');
-
+var shoppara=document.getElementById('shop');
 
 
 
@@ -19,12 +19,20 @@ function dikhao(g)
     if(g==0)
        {
          aadmi.style.display="none";
+         shoppara.style.display="none";
          para.style.display="block";
        }
-    else
+    else if(g==1)
     {
        
         aadmi.style.display="block";
+        shoppara.style.display="none";
+         para.style.display="none";
+    }
+    else
+    {
+        aadmi.style.display="none";
+        shoppara.style.display="block";
          para.style.display="none";
     }
     
@@ -170,8 +178,66 @@ document.getElementById('username3').value="";
        })
        .catch(err=>console.log(err));
 
-    
-    }
 
+    };
+
+
+
+   function mitao()
+   {
+       var user={
+           username:username3,
+           password:password3
+       }
+      
+       fetch('/del',{
+        method:'DELETE',
+        headers:{
+          'Content-Type':'application/json'
+        },
+        body:JSON.stringify(user)
+      })
+      .then((res)=>res.json())
+      .then(data=>{
+          dikhao(0);
+      })
+      .catch(err=>console.log(err));
+
+   }
    
-    
+    //////shopping start karo re baba
+       function  func1(arr)
+       {
+      
+            shoppara.innerHTML=''; 
+        arr.forEach(temp=>{
+          console.log(temp.name);
+            const card = document.createElement('div');
+            card.classList = 'card-body';
+            const content=`
+            <div class="card">
+             
+                <img class="card-img-bottom" src="${temp.img}"/>
+                    <div class="card-body">
+                       <h1>${temp.name}</h1>
+                        <h5>Cost:${temp.amount}</h5>
+                       <button>Add to Cart</button>
+                     </div>
+            </div>
+            `;
+            shoppara.innerHTML+=content;
+        });
+        dikhao(2);
+       }
+
+
+
+    function shop()
+    {
+        fetch('/shopping')
+         .then((res)=>res.json())
+         .then((data)=>func1(data))
+         .catch((err)=>console.log(err));
+
+
+    }

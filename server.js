@@ -107,6 +107,35 @@ app.put('/users',(req,res)=>{
 });
 
 
+app.delete('/del',(req,res)=>{
+    var username=req.body.username;
+    var password=req.body.password;
+  MongoClient.connect(url,function(err,db){
+    if(err) throw err;
+    var dbo=db.db("users");
+    var obj={username:username,password:password};
+    dbo.collection("user").deleteOne(obj,function(err,obb){
+      if(err) throw err;
+      console.log("deleted");
+      db.close();
+    })
+  });
+  res.send({deleted:"deleted"});
+});
+
+///shopping krna hai re baba
+app.get('/shopping',(req, res) => {
+    
+  MongoClient.connect(url, function(err, db) {
+      if (err) throw err;
+      var dbo = db.db("shopping");
+      dbo.collection("item").find({}).toArray( function(err, result) {
+        if (err) throw err;
+       res.send(result);
+        db.close();
+      })
+    })
+});
 app.listen(8000,function()
 {
     console.log("Our server has started on port 8000")
