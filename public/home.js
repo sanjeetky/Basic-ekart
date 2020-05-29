@@ -8,7 +8,7 @@ var aadmi=document.getElementById('aadmi');
 var inam=document.getElementById('inam');
 var ipaisa=document.getElementById('ipaisa');
 var shoppara=document.getElementById('shop');
-
+var cart=document.getElementById('cart');
 
 
 function dikhao(g)
@@ -21,6 +21,7 @@ function dikhao(g)
          aadmi.style.display="none";
          shoppara.style.display="none";
          para.style.display="block";
+         cart.style.display="none";
        }
     else if(g==1)
     {
@@ -28,12 +29,20 @@ function dikhao(g)
         aadmi.style.display="block";
         shoppara.style.display="none";
          para.style.display="none";
+         cart.style.display="none";
     }
-    else
+    else if(g==2)
     {
         aadmi.style.display="none";
         shoppara.style.display="block";
          para.style.display="none";
+         cart.style.display="none";
+    }
+    else{
+        aadmi.style.display="none";
+        shoppara.style.display="none";
+         para.style.display="none";
+         cart.style.display="block";
     }
     
 }
@@ -206,12 +215,148 @@ document.getElementById('username3').value="";
    }
    
     //////shopping start karo re baba
+
+function  lelo(data)
+{
+     var item={
+         itemid:data
+     }
+     fetch('/itemfind',{
+        method:'POST',
+        headers:{ 'Content-Type':'application/json'},
+        body:JSON.stringify(item)
+    })
+    .then((res)=>res.json())
+    .then((data)=>{
+         console.log(data);
+        var item={
+            username:username3,
+            password:password3,
+            itemname:data[0].name,
+            itemimg:data[0].img,
+            itemcost:data[0].amount,
+            itemid:data[0].itemid
+        }
+           fetch('/itempost',{
+               method:'POST',
+               headers:{ 'Content-Type':'application/json'},
+               body:JSON.stringify(item)
+           })
+           .then((res)=>res.json())
+           .then((data)=>{
+                 console.log(data);
+           } )
+           .catch(err=>console.log(err));
+    })
+    .catch(err=>console.log(err));
+};
+
+// cart me jao
+
+//buy
+function buy(rupee)
+{
+   if(rupee>paisa)
+   console.log("Not sufficient Balance");
+   else{
+    var aaadmi={
+        username:username3,
+        password:password3,
+        rupee:+paisa - +rupee
+    }
+    fetch('/users',{
+        method:'PUT',
+        headers:{ 'Content-Type':'application/json'},
+        body:JSON.stringify(aaadmi)
+    })
+    .then((res)=>res.json())
+    .then(data=>{
+        console.log("successfully bought");
+        paisa=data.paisa;
+        dikhao(1);
+    })
+    .catch(err=>console.log(err));
+}  
+};
+
+function itemhatao(data)
+{
+    console.log(data);
+     let item={
+         itemid:data,
+         username:username3,
+         password:password3
+     }
+    fetch('/itemhatao',{
+        method:'DELETE',
+        headers:{ 'Content-Type':'application/json'},
+        body:JSON.stringify(item)
+    })
+    .then((res)=>res.json())
+    .then((data)=>{
+          console.log("deleted");
+
+          cartjao()
+    } )
+    .catch(err=>console.log(err));
+};
+
+function cartdikhao(arr)
+{
+
+    cart.innerHTML=''; 
+    const temp=`
+        <h1 style="text-align: center; margin-left: 5%; margin-top: 0%; padding-top: 1%;" id="inam">Welcome ${nam}</h1>
+        <h3  style="text-align: center; margin-left: 5%;" id="ipaisa">Current Amount:  ${  paisa}</h3>
+        `
+        cart.innerHTML+=temp;
+        var sum=0;
+        arr.forEach(temp=>{
+            sum=+sum + +temp.itemcost;
+            const card = document.createElement('div');
+            card.classList = 'card-body';
+            const content=`
+            <div class="card">
+             
+                <img class="card-img-bottom" src="${temp.itemimg}"/>
+                    <div class="card-body">
+                       <h1>${temp.itemname}</h1>
+                        <h5>Cost:${temp.itemcost}</h5>
+                        <button onclick= "itemhatao(${temp.itemid})" >Remove this item</button>
+                     </div>
+            </div>
+            `;
+
+            cart.innerHTML+=content;
+        });
+       
+        const temp1=`
+        <h3 style="text-align: center; margin-left: 5%; margin-top: 0%; padding-top: 1%;" id="inam">Total Amount ${sum}</h3>
+        <button style="position: relative; left: 40%; " onclick="buy(${sum})" > Buy</button>
+        <button style="position: relative; left: 44%; " onclick="dikhao(1)" > Dashboard</button>
+        <button style="position: relative; left: 48%; " onclick="dikhao(2)" > Continue Shopping</button>
+        `
+        cart.innerHTML+=temp1;
+        
+        dikhao(3);
+
+};
+
+function cartjao()
+{
+
+    fetch('/cartdekho')
+    .then((res)=>res.json())
+    .then((data)=>cartdikhao(data))
+    .catch((err)=>console.log(err));
+  
+};
+
        function  func1(arr)
        {
-      
             shoppara.innerHTML=''; 
-        arr.forEach(temp=>{
-          console.log(temp.name);
+             arr.forEach(temp=>{
+          console.log(temp);
             const card = document.createElement('div');
             card.classList = 'card-body';
             const content=`
@@ -221,14 +366,17 @@ document.getElementById('username3').value="";
                     <div class="card-body">
                        <h1>${temp.name}</h1>
                         <h5>Cost:${temp.amount}</h5>
-                       <button>Add to Cart</button>
+                       <button onclick= "lelo(${temp.itemid})" >Add to Cart</button>
                      </div>
             </div>
             `;
+
             shoppara.innerHTML+=content;
         });
+        const element=`<button style="position: absolute; top:2rem; right:2rem; " onclick="cartjao()" > Go to Cart</button>`;
+        shoppara.innerHTML+=element;
         dikhao(2);
-       }
+       };
 
 
 
