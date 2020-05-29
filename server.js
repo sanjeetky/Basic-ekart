@@ -189,12 +189,13 @@ app.post('/itempost',(req,res)=>{
 //cart
 
 
-app.get('/cartdekho',(req, res) => {
-    
+app.post('/cartdekho',(req, res) => {
+     var username=req.body.username;
+     var password=req.body.password;
   MongoClient.connect(url, function(err, db) {
       if (err) throw err;
       var dbo = db.db("cart");
-      dbo.collection("item").find({}).toArray( function(err, result) {
+      dbo.collection("item").find({username:username,password:password}).toArray( function(err, result) {
         if (err) throw err;
        res.send(result);
         db.close();

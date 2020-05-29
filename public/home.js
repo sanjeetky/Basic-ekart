@@ -13,7 +13,7 @@ var cart=document.getElementById('cart');
 
 function dikhao(g)
 {
-    console.log("clicked");
+    console.log("displayed");
     inam.innerHTML="Welcome"+" "+nam;
     ipaisa.innerHTML="Current Balance"+": "+paisa;
     if(g==0)
@@ -49,32 +49,54 @@ function dikhao(g)
 
 function create()
 {
-    console.log("aa gaya")
+    
    var name=document.getElementById('name').value;
    var userid=document.getElementById('userid').value;
    var pass=document.getElementById('pass').value;
-var user={
-    name:name,
-    username:userid,
-    password:pass
+   if(name==""||userid==""||pass=="")
+   console.log("fill all the information");
+else{
+    document.getElementById('name').value="";
+    document.getElementById('userid').value="";
+    document.getElementById('pass').value="";
+    var userf={
+        username:userid
+    }
+       fetch('/find',{
+           method:'POST',
+           headers:{ 'Content-Type':'application/json'},
+           body:JSON.stringify(userf)
+       })
+       .then((res)=>res.json())
+       .then(data=>{
+           if(data.length>0)
+           console.log("username already taken");
+           else{
+            var user={
+                name:name,
+                username:userid,
+                password:pass
+            }
+          
+               fetch('/users',{
+                   method:'POST',
+                   headers:{ 'Content-Type':'application/json'},
+                   body:JSON.stringify(user)
+               })
+               .then((res)=>res.json())
+               .then((data)=>{
+                     paisa=0;
+                     nam=data.name;
+                     pasword=data.password;
+                     console.log("account created");
+                     dikhao(1);
+               } )
+               .catch(err=>console.log(err));
+             }
+       })
+       .catch(err=>console.log(err))
+   
 }
-document.getElementById('name').value="";
-document.getElementById('userid').value="";
-document.getElementById('pass').value="";
-   fetch('/users',{
-       method:'POST',
-       headers:{ 'Content-Type':'application/json'},
-       body:JSON.stringify(user)
-   })
-   .then((res)=>res.json())
-   .then((data)=>{
-         paisa=0;
-         nam=data[0].name;
-         pasword=data[0].password;
-         
-         dikhao(1);
-   } )
-   .catch(err=>console.log(err));
 };
 
 
@@ -82,7 +104,9 @@ function login()
 {
     var userid=document.getElementById('userid2').value;
    var pass=document.getElementById('pass2').value;
-
+   if(userid==""||pass=="")
+   console.log("fill all information");
+  else{
    var user={
     username:userid,
     password:pass
@@ -103,11 +127,19 @@ document.getElementById('pass2').value="";
        paisa=data[0].paisa;
        dikhao(1);
    })
-   .catch(err=>console.log(err));
+   .catch(err=>console.log("invalid user"));
+}
 };
 
 function mango()
 {
+    if(document.getElementById('mango').value<=0)
+    {
+    console.log("amount should be positive");
+    document.getElementById('mango').value="";
+    }
+    else
+    {
    let rupee=+document.getElementById('mango').value+  +paisa;
     var user={
         username:username3,
@@ -127,7 +159,7 @@ function mango()
         dikhao(1);
     })
     .catch(err=>console.log(err));
-    
+}
 }
 function bhejo()
 {
@@ -345,7 +377,15 @@ function cartdikhao(arr)
 function cartjao()
 {
 
-    fetch('/cartdekho')
+    let item={
+        username:username3,
+        password:password3
+    }
+    fetch('/cartdekho',{
+        method:'POST',
+        headers:{ 'Content-Type':'application/json'},
+        body:JSON.stringify(item)
+    })
     .then((res)=>res.json())
     .then((data)=>cartdikhao(data))
     .catch((err)=>console.log(err));
@@ -386,6 +426,4 @@ function cartjao()
          .then((res)=>res.json())
          .then((data)=>func1(data))
          .catch((err)=>console.log(err));
-
-
     }
